@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
-commitlint -E HUSKY_GIT_PARAMS
+yarn commitlint --edit $1
