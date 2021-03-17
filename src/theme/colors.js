@@ -16,7 +16,14 @@ const colors = {
     main: {
       color: '#000000',
     },
-    contrast: '#FFFFFF',
+    contrast: {
+      color: '#FFFFFF',
+    },
+  },
+  secondary: {
+    main: {
+      color: '#35B6FF',
+    },
   },
 };
 

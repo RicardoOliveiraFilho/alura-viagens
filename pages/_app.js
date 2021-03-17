@@ -14,8 +14,8 @@ export default function App({ Component, pageProps }) {
         <link href="https://fonts.googleapis.com/css2?family=Pattaya&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
       </Head>
 
-      <GlobalStyle />
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
         <Component {...pageProps} />
       </ThemeProvider>
     </>
