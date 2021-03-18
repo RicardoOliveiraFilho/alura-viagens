@@ -5,6 +5,7 @@ export default {
   colors,
   typographyVariants,
   borderRadius: '10px',
+  transition: '200ms ease-in-out',
   breakpoints: {
     xs: 0,
     sm: 480,
