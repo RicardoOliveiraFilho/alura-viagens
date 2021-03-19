@@ -4,6 +4,7 @@ import FormContentWrapper from './styles/FormContentWrapper';
 import Text from '../../../foundation/Text';
 import TextField from '../../TextField';
 import Button from '../../Button';
+import Radio from '../../Radio';
 
 function FormContent() {
   return (
@@ -138,6 +139,36 @@ function FormContent() {
       >
         Como será o pagamento?
       </Text>
+
+      <FormContentWrapper.InputGroup
+        marginTop="-10px"
+        marginBottom="30px"
+        flexDirection="row"
+      >
+        <Radio
+          start_round_edge
+          name="tipo-pagamento"
+          value="Transferência"
+          srcimg="images/transferencia.png"
+          onChange={() => {}}
+        />
+
+        <Radio
+          name="tipo-pagamento"
+          value="Cartão"
+          srcimg="images/credit_card.png"
+          onChange={() => {}}
+        />
+
+        <Radio
+          end_round_edge
+          name="tipo-pagamento"
+          value="PayPal"
+          srcimg="images/paypal.png"
+          onChange={() => {}}
+        />
+      </FormContentWrapper.InputGroup>
+
       <Text
         tag="p"
         variant="sectionText"

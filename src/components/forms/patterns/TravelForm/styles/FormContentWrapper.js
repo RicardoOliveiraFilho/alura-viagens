@@ -2,6 +2,7 @@
 import styled, { css } from 'styled-components';
 
 import breakpointsMedia from '../../../../../theme/utils/breakpointsMedia';
+import propToStyle from '../../../../../theme/utils/propToStyle';
 import textStylesVariantsMap from '../../../../../theme/utils/textStylesVariantsMap';
 
 const FormContentWrapper = styled.div`
@@ -27,7 +28,7 @@ FormContentWrapper.InputGroup = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    flex-direction: column;
+    flex-direction: ${({ flexDirection }) => (flexDirection || 'column')};
 
     ${breakpointsMedia({
         md: css`
@@ -41,6 +42,9 @@ FormContentWrapper.InputGroup = styled.div`
             }
         `,
     })}
+
+    ${propToStyle('marginTop')}
+    ${propToStyle('marginBottom')}
 `;
 
 export default FormContentWrapper;
