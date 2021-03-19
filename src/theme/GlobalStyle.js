@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { normalize } from 'styled-normalize';
 import { createGlobalStyle } from 'styled-components';
 
@@ -16,6 +17,8 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
         width: 100%;
         background-color: ${({ theme }) => theme.colors.background.main.color}
+
+
     }
 
     #__next {

@@ -11,7 +11,8 @@ const TextBase = styled.span`
     ${({ variant }) => textStylesVariantsMap[variant]}
     color: ${(props) => get(props.theme, `colors.${props.color}.color`)};
 
-    ${propToStyle('margin')}
+    ${propToStyle('marginTop')}
+    ${propToStyle('marginLeft')}
 `;
 
 export default function Text({
@@ -31,10 +32,11 @@ export default function Text({
 Text.propTypes = {
   tag: PropTypes.string,
   variant: PropTypes.string,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 Text.defaultProps = {
   tag: 'span',
   variant: 'labelTextII',
+  children: null,
 };
