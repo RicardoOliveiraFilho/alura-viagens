@@ -10,6 +10,7 @@ const RadioWrapper = styled.div`
     justify-content: center;
     align-items: center;
 
+    pointer-events: all;
     cursor: pointer;
 
     width: 106px;
@@ -27,6 +28,16 @@ const RadioWrapper = styled.div`
       if (props.end_round_edge) {
         return css`
           border-radius: 0px ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius} 0px;
+        `;
+      }
+
+      return css``;
+    }}
+
+    ${function selected(props) {
+      if (props.selected) {
+        return css`
+          background: rgba(211, 234, 255, 0.56);
         `;
       }
 

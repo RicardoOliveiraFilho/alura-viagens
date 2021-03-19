@@ -12,6 +12,8 @@ const Input = styled(Text)`
   border: 1px solid ${({ theme }) => theme.colors.borders.main.color};
   border-radius: ${({ theme }) => theme.borderRadius};
 
+  outline: 0;
+
   height: 48px;
   width: ${({ width }) => width}
 `;

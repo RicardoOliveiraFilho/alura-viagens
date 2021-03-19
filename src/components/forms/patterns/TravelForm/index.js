@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FormContentWrapper from './styles/FormContentWrapper';
 import Text from '../../../foundation/Text';
@@ -7,6 +7,37 @@ import Button from '../../Button';
 import Radio from '../../Radio';
 
 function FormContent() {
+  const [formData, setFormData] = useState({
+    dataSaida: '',
+    dataRetorno: '',
+    localOrigem: '',
+    localChegada: '',
+    tipoPagamentoSelected: '',
+    nome: '',
+    sobrenome: '',
+    paisResidencia: '',
+    dataNascimento: '',
+    cpf: '',
+    email: '',
+    telefone: '',
+  });
+
+  function handleChange(event) {
+    const fieldName = event.target.getAttribute('name');
+    setFormData({
+      ...formData,
+      [fieldName]: event.target.value,
+    });
+  }
+
+  function handleClick(event) {
+    const isClickArea = event.target.closest('[data-click-area="true"]');
+    setFormData({
+      ...formData,
+      tipoPagamentoSelected: isClickArea.firstChild.value,
+    });
+  }
+
   return (
     <FormContentWrapper>
       <Text
@@ -52,10 +83,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="data-saida"
-            value=""
+            name="dataSaida"
+            value={formData.dataSaida}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
 
@@ -73,10 +104,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="data-retorno"
-            value=""
+            name="dataRetorno"
+            value={formData.dataRetorno}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -99,10 +130,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="local-origem"
-            value=""
+            name="localOrigem"
+            value={formData.localOrigem}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
 
@@ -121,10 +152,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="data-chegada"
-            value=""
+            name="localChegada"
+            value={formData.localChegada}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -150,14 +181,16 @@ function FormContent() {
           name="tipo-pagamento"
           value="Transferência"
           srcimg="images/transferencia.png"
-          onChange={() => {}}
+          selected={formData.tipoPagamentoSelected === 'Transferência'}
+          onClick={handleClick}
         />
 
         <Radio
           name="tipo-pagamento"
           value="Cartão"
           srcimg="images/credit_card.png"
-          onChange={() => {}}
+          selected={formData.tipoPagamentoSelected === 'Cartão'}
+          onClick={handleClick}
         />
 
         <Radio
@@ -165,7 +198,8 @@ function FormContent() {
           name="tipo-pagamento"
           value="PayPal"
           srcimg="images/paypal.png"
-          onChange={() => {}}
+          selected={formData.tipoPagamentoSelected === 'PayPal'}
+          onClick={handleClick}
         />
       </FormContentWrapper.InputGroup>
 
@@ -197,9 +231,9 @@ function FormContent() {
 
           <TextField
             name="nome"
-            value=""
+            value={formData.nome}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -215,9 +249,9 @@ function FormContent() {
 
           <TextField
             name="sobrenome"
-            value=""
+            value={formData.sobrenome}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -240,10 +274,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="pais-residencia"
-            value=""
+            name="paisResidencia"
+            value={formData.paisResidencia}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
 
@@ -262,10 +296,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="data-nascimento"
-            value=""
+            name="dataNascimento"
+            value={formData.dataNascimento}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -286,10 +320,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="nome"
-            value=""
+            name="cpf"
+            value={formData.cpf}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -304,10 +338,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="sobrenome"
-            value=""
+            name="email"
+            value={formData.email}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -322,10 +356,10 @@ function FormContent() {
           </Text>
 
           <TextField
-            name="nome"
-            value=""
+            name="telefone"
+            value={formData.telefone}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
           />
         </div>
       </FormContentWrapper.InputGroup>
