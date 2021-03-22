@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FormContentWrapper from './styles/FormContentWrapper';
 import Text from '../../../foundation/Text';
@@ -6,7 +6,184 @@ import TextField from '../../TextField';
 import Button from '../../Button';
 import Radio from '../../Radio';
 
+import cpfMask from '../../../../utils/cpfMask';
+import dateMask from '../../../../utils/dateMask';
+import phoneMask from '../../../../utils/phoneMask';
+import validatorField from '../../../../utils/validatorField';
+
+const PATTERNS = {
+  textPattern: '[A-Za-záàâãéèêíïóôõöúüçñÁÀÂÃÉÈÍÏÓÔÕÖÜÚÇÑ ]+$',
+};
+
 function FormContent() {
+  const [formData, setFormData] = useState({
+    dataSaida: '',
+    dataRetorno: '',
+    localOrigem: '',
+    localChegada: '',
+    tipoPagamentoSelected: '',
+    nome: '',
+    sobrenome: '',
+    paisResidencia: '',
+    dataNascimento: '',
+    cpf: '',
+    email: '',
+    telefone: '',
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    dataSaidaError: '',
+    dataRetornoError: '',
+    dataNascimentoError: '',
+    localOrigemError: '',
+    localChegadaError: '',
+    nomeError: '',
+    sobrenomeError: '',
+    paisResidenciaError: '',
+    telefoneError: '',
+    emailError: '',
+    cpfError: '',
+  });
+
+  const isFormInvalid = (formData.dataSaida.length === 0 || formErrors.dataSaidaError.length !== 0)
+    || (formData.dataRetorno.length === 0 || formErrors.dataRetornoError.length !== 0)
+    || (formData.dataNascimento.length === 0 || formErrors.dataNascimentoError.length !== 0)
+    || (formData.localOrigem.length === 0 || formErrors.localOrigemError.length !== 0)
+    || (formData.localChegada.length === 0 || formErrors.localChegadaError.length !== 0)
+    || (formData.nome.length === 0 || formErrors.nomeError.length !== 0)
+    || (formData.sobrenome.length === 0 || formErrors.sobrenomeError.length !== 0)
+    || (formData.paisResidencia.length === 0 || formErrors.paisResidenciaError.length !== 0)
+    || (formData.telefone.length === 0 || formErrors.telefoneError.length !== 0)
+    || (formData.email.length === 0 || formErrors.emailError.length !== 0)
+    || (formData.cpf.length === 0 || formErrors.cpfError.length !== 0)
+    || formData.tipoPagamentoSelected.length === 0;
+
+  function handleChange(event) {
+    const fieldName = event.target.getAttribute('name');
+    let fieldValue = '';
+
+    if (fieldName === 'cpf') {
+      fieldValue = cpfMask(event.target.value);
+    } else if (fieldName === 'dataSaida'
+      || fieldName === 'dataRetorno' || fieldName === 'dataNascimento') {
+      fieldValue = dateMask(event.target.value);
+    } else if (fieldName === 'telefone') {
+      if (event.target.value.length < 17) {
+        fieldValue = phoneMask.patternFix(event.target.value);
+      } else {
+        fieldValue = phoneMask.patternMobile(event.target.value).slice(0, 17);
+      }
+    } else {
+      fieldValue = event.target.value;
+    }
+
+    setFormData({
+      ...formData,
+      [fieldName]: fieldValue,
+    });
+  }
+
+  function handleClick(event) {
+    const isClickArea = event.target.closest('[data-click-area="true"]');
+    setFormData({
+      ...formData,
+      tipoPagamentoSelected: isClickArea.firstChild.value,
+    });
+  }
+
+  function handleInput(event) {
+    const char = String.fromCharCode(event.charCode);
+
+    if (!char.match(PATTERNS.textPattern)) {
+      event.preventDefault();
+    }
+  }
+
+  function onBlur(event) {
+    const fieldName = event.target.getAttribute('name');
+    if (fieldName === 'dataSaida') {
+      setFormErrors({
+        ...formErrors,
+        dataSaidaError: validatorField.validateDate(event.target.value, false),
+      });
+
+      if (event.target.value && formData.dataRetorno) {
+        setFormErrors({
+          ...formErrors,
+          dataSaidaError: validatorField.compareDates(
+            event.target.value, formData.dataRetorno.toString(), true,
+          ),
+        });
+      }
+    } else if (fieldName === 'dataRetorno') {
+      setFormErrors({
+        ...formErrors,
+        dataRetornoError: validatorField.validateDate(event.target.value, false),
+      });
+
+      if (event.target.value && formData.dataSaida) {
+        setFormErrors({
+          ...formErrors,
+          dataRetornoError: validatorField.compareDates(
+            event.target.value, formData.dataSaida.toString(), false,
+          ),
+        });
+      }
+    } else if (fieldName === 'dataNascimento') {
+      setFormErrors({
+        ...formErrors,
+        dataNascimentoError: validatorField.validateDate(event.target.value, true),
+      });
+
+      if (event.target.value) {
+        setFormErrors({
+          ...formErrors,
+          dataNascimentoError: validatorField.identifyAge(event.target.value, new Date()),
+        });
+      }
+    } else if (fieldName === 'localOrigem') {
+      setFormErrors({
+        ...formErrors,
+        localOrigemError: validatorField.validateText(event.target.value),
+      });
+    } else if (fieldName === 'localChegada') {
+      setFormErrors({
+        ...formErrors,
+        localChegadaError: validatorField.validateText(event.target.value),
+      });
+    } else if (fieldName === 'nome') {
+      setFormErrors({
+        ...formErrors,
+        nomeError: validatorField.validateText(event.target.value),
+      });
+    } else if (fieldName === 'sobrenome') {
+      setFormErrors({
+        ...formErrors,
+        sobrenomeError: validatorField.validateText(event.target.value),
+      });
+    } else if (fieldName === 'paisResidencia') {
+      setFormErrors({
+        ...formErrors,
+        paisResidenciaError: validatorField.validateText(event.target.value),
+      });
+    } else if (fieldName === 'telefone') {
+      setFormErrors({
+        ...formErrors,
+        telefoneError: validatorField.validatePhone(event.target.value),
+      });
+    } else if (fieldName === 'email') {
+      setFormErrors({
+        ...formErrors,
+        emailError: validatorField.validateEmail(event.target.value),
+      });
+    } else if (fieldName === 'cpf') {
+      setFormErrors({
+        ...formErrors,
+        cpfError: validatorField.validateCpf(event.target.value),
+      });
+    }
+  }
+
   return (
     <FormContentWrapper>
       <Text
@@ -49,13 +226,23 @@ function FormContent() {
             }}
           >
             Data de saída
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.dataSaidaError}
+            </Text>
           </Text>
 
           <TextField
-            name="data-saida"
-            value=""
+            name="dataSaida"
+            value={formData.dataSaida}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onBlur={onBlur}
+            color={formErrors.dataSaidaError ? 'error' : 'main'}
           />
         </div>
 
@@ -70,13 +257,23 @@ function FormContent() {
             }}
           >
             Data de retorno
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '10px',
+              }}
+            >
+              {formErrors.dataRetornoError}
+            </Text>
           </Text>
 
           <TextField
-            name="data-retorno"
-            value=""
+            name="dataRetorno"
+            value={formData.dataRetorno}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onBlur={onBlur}
+            color={formErrors.dataRetornoError ? 'error' : 'main'}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -96,13 +293,24 @@ function FormContent() {
             }}
           >
             Local de origem
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.localOrigemError}
+            </Text>
           </Text>
 
           <TextField
-            name="local-origem"
-            value=""
+            name="localOrigem"
+            value={formData.localOrigem}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.localOrigemError ? 'error' : 'main'}
           />
         </div>
 
@@ -118,13 +326,24 @@ function FormContent() {
             }}
           >
             Local de chegada
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.localChegadaError}
+            </Text>
           </Text>
 
           <TextField
-            name="data-chegada"
-            value=""
+            name="localChegada"
+            value={formData.localChegada}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.localChegadaError ? 'error' : 'main'}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -150,14 +369,16 @@ function FormContent() {
           name="tipo-pagamento"
           value="Transferência"
           srcimg="images/transferencia.png"
-          onChange={() => {}}
+          selected={formData.tipoPagamentoSelected === 'Transferência'}
+          onClick={handleClick}
         />
 
         <Radio
           name="tipo-pagamento"
           value="Cartão"
           srcimg="images/credit_card.png"
-          onChange={() => {}}
+          selected={formData.tipoPagamentoSelected === 'Cartão'}
+          onClick={handleClick}
         />
 
         <Radio
@@ -165,7 +386,8 @@ function FormContent() {
           name="tipo-pagamento"
           value="PayPal"
           srcimg="images/paypal.png"
-          onChange={() => {}}
+          selected={formData.tipoPagamentoSelected === 'PayPal'}
+          onClick={handleClick}
         />
       </FormContentWrapper.InputGroup>
 
@@ -193,13 +415,24 @@ function FormContent() {
             }}
           >
             Nome
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.nomeError}
+            </Text>
           </Text>
 
           <TextField
             name="nome"
-            value=""
+            value={formData.nome}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.nomeError ? 'error' : 'main'}
           />
         </div>
         <div>
@@ -211,13 +444,24 @@ function FormContent() {
             }}
           >
             Sobrenome
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.sobrenomeError}
+            </Text>
           </Text>
 
           <TextField
             name="sobrenome"
-            value=""
+            value={formData.sobrenome}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.sobrenomeError ? 'error' : 'main'}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -237,13 +481,24 @@ function FormContent() {
             }}
           >
             País de residência
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.paisResidenciaError}
+            </Text>
           </Text>
 
           <TextField
-            name="pais-residencia"
-            value=""
+            name="paisResidencia"
+            value={formData.paisResidencia}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.paisResidenciaError ? 'error' : 'main'}
           />
         </div>
 
@@ -259,13 +514,23 @@ function FormContent() {
             }}
           >
             Data de nascimento
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '10px',
+              }}
+            >
+              {formErrors.dataNascimentoError}
+            </Text>
           </Text>
 
           <TextField
-            name="data-nascimento"
-            value=""
+            name="dataNascimento"
+            value={formData.dataNascimento}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onBlur={onBlur}
+            color={formErrors.dataNascimentoError ? 'error' : 'main'}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -283,13 +548,23 @@ function FormContent() {
             }}
           >
             CPF
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.cpfError}
+            </Text>
           </Text>
 
           <TextField
-            name="nome"
-            value=""
+            name="cpf"
+            value={formData.cpf}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onBlur={onBlur}
+            color={formErrors.cpfError ? 'error' : 'main'}
           />
         </div>
         <div>
@@ -301,13 +576,23 @@ function FormContent() {
             }}
           >
             Email
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.emailError}
+            </Text>
           </Text>
 
           <TextField
-            name="sobrenome"
-            value=""
+            name="email"
+            value={formData.email}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onBlur={onBlur}
+            color={formErrors.emailError ? 'error' : 'main'}
           />
         </div>
         <div>
@@ -319,13 +604,23 @@ function FormContent() {
             }}
           >
             Telefone
+            <Text
+              color="error.main"
+              marginLeft={{
+                md: '5px',
+              }}
+            >
+              {formErrors.telefoneError}
+            </Text>
           </Text>
 
           <TextField
-            name="nome"
-            value=""
+            name="telefone"
+            value={formData.telefone}
             width="318px"
-            onChange={() => {}}
+            onChange={handleChange}
+            onBlur={onBlur}
+            color={formErrors.telefoneError ? 'error' : 'main'}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -334,6 +629,7 @@ function FormContent() {
         color="primary.contrast"
         background="background.main"
         type="submit"
+        disabled={isFormInvalid}
       >
         Comprar
       </Button>

@@ -4,15 +4,19 @@ import PropTypes from 'prop-types';
 import RadioWrapper from './styles/RadioWrapper';
 
 export default function Radio({
-  name, value, srcimg, onChange, ...props
+  name, value, srcimg, onClick, ...props
 }) {
   return (
-    <RadioWrapper {...props}>
+    <RadioWrapper
+      onClick={onClick}
+      data-click-area="true"
+      {...props}
+    >
       <input
         type="radio"
         name={name}
+        value={value}
         srcimg={srcimg}
-        onClick={() => onChange(value)}
       />
       {
         (
@@ -30,7 +34,7 @@ Radio.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   srcimg: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 Radio.defaultProps = {

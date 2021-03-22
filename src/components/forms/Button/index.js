@@ -16,6 +16,7 @@ const Button = styled.button`
   width: 318px;
   height: 60px;
   margin-bottom: 32px;
+  outline: 0;
   &:hover,
   &:focus {
     opacity: .5;
@@ -30,6 +31,11 @@ const Button = styled.button`
         margin-bottom: 54px;
       `,
   })}
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .2;
+  }
 `;
 
 export default Button;
