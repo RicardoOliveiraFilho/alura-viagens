@@ -31,6 +31,11 @@ const Button = styled.button`
         margin-bottom: 54px;
       `,
   })}
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .2;
+  }
 `;
 
 export default Button;

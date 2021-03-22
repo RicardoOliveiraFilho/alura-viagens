@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 
 import Text from '../../foundation/Text';
 
@@ -9,7 +10,7 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled(Text)`
-  border: 1px solid ${({ theme }) => theme.colors.borders.main.color};
+  border: 1px solid ${(props) => get(props.theme, `colors.borders.${props.color}.color`)};
   border-radius: ${({ theme }) => theme.borderRadius};
 
   outline: 0;
@@ -27,7 +28,10 @@ export default function TextField({
   name,
   value,
   onChange,
+  onKeyPress,
+  onBlur,
   width,
+  ...props
 }) {
   return (
     <InputWrapper>
@@ -36,7 +40,10 @@ export default function TextField({
         name={name}
         value={value}
         onChange={onChange}
+        onKeyPress={onKeyPress}
+        onBlur={onBlur}
         width={width}
+        {...props}
       />
     </InputWrapper>
   );
@@ -47,8 +54,12 @@ TextField.propTypes = {
   value: PropTypes.string.isRequired,
   width: PropTypes.string.isRequired,
   onChange: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 TextField.defaultProps = {
   onChange: null,
+  onKeyPress: null,
+  onBlur: null,
 };

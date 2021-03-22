@@ -11,6 +11,9 @@ const colors = {
     main: {
       color: '#35B6FF',
     },
+    error: {
+        color: '#FF0000',
+    },
   },
   primary: {
     main: {
@@ -23,6 +26,11 @@ const colors = {
   secondary: {
     main: {
       color: '#35B6FF',
+    },
+  },
+  error: {
+    main: {
+      color: '#FF0000',
     },
   },
 };
