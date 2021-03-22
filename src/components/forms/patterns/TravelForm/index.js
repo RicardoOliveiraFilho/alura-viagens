@@ -107,10 +107,12 @@ function FormContent() {
         dataSaidaError: validatorField.validateDate(event.target.value, false),
       });
 
-      if(event.target.value && formData.dataRetorno) {
+      if (event.target.value && formData.dataRetorno) {
         setFormErrors({
           ...formErrors,
-          dataSaidaError: validatorField.compareDates(event.target.value, formData.dataRetorno.toString(), true),
+          dataSaidaError: validatorField.compareDates(
+            event.target.value, formData.dataRetorno.toString(), true,
+          ),
         });
       }
     } else if (fieldName === 'dataRetorno') {
@@ -119,10 +121,12 @@ function FormContent() {
         dataRetornoError: validatorField.validateDate(event.target.value, false),
       });
 
-      if(event.target.value && formData.dataSaida) {
+      if (event.target.value && formData.dataSaida) {
         setFormErrors({
           ...formErrors,
-          dataRetornoError: validatorField.compareDates(event.target.value, formData.dataSaida.toString(), false),
+          dataRetornoError: validatorField.compareDates(
+            event.target.value, formData.dataSaida.toString(), false,
+          ),
         });
       }
     } else if (fieldName === 'dataNascimento') {
@@ -131,7 +135,7 @@ function FormContent() {
         dataNascimentoError: validatorField.validateDate(event.target.value, true),
       });
 
-      if(event.target.value) {
+      if (event.target.value) {
         setFormErrors({
           ...formErrors,
           dataNascimentoError: validatorField.identifyAge(event.target.value, new Date()),

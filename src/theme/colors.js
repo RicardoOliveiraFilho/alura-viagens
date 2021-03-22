@@ -12,7 +12,7 @@ const colors = {
       color: '#35B6FF',
     },
     error: {
-        color: '#FF0000',
+      color: '#FF0000',
     },
   },
   primary: {
