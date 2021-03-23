@@ -46,7 +46,7 @@ const validatorField = {
 
       if (!birthDay) {
         const today = convertDate(new Date());
-        return date < today ? 'Data já passada!' : '';
+        return textToDate(date) < textToDate(today) ? 'Data já passada!' : '';
       }
 
       return '';
