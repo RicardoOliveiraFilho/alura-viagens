@@ -5,11 +5,14 @@ import Text from '../../../foundation/Text';
 import TextField from '../../TextField';
 import Button from '../../Button';
 import Radio from '../../Radio';
+import Autocomplete from '../../Autocomplete';
 
 import cpfMask from '../../../../utils/cpfMask';
 import dateMask from '../../../../utils/dateMask';
 import phoneMask from '../../../../utils/phoneMask';
 import validatorField from '../../../../utils/validatorField';
+
+import countries from '../../../../utils/countries';
 
 const PATTERNS = {
   textPattern: '[A-Za-záàâãéèêíïóôõöúüçñÁÀÂÃÉÈÍÏÓÔÕÖÜÚÇÑ ]+$',
@@ -146,10 +149,20 @@ function FormContent() {
         ...formErrors,
         localOrigemError: validatorField.validateText(event.target.value),
       });
+
+      setFormData({
+        ...formData,
+        [fieldName]: event.target.value,
+      });
     } else if (fieldName === 'localChegada') {
       setFormErrors({
         ...formErrors,
         localChegadaError: validatorField.validateText(event.target.value),
+      });
+
+      setFormData({
+        ...formData,
+        [fieldName]: event.target.value,
       });
     } else if (fieldName === 'nome') {
       setFormErrors({
@@ -165,6 +178,11 @@ function FormContent() {
       setFormErrors({
         ...formErrors,
         paisResidenciaError: validatorField.validateText(event.target.value),
+      });
+
+      setFormData({
+        ...formData,
+        [fieldName]: event.target.value,
       });
     } else if (fieldName === 'telefone') {
       setFormErrors({
@@ -184,8 +202,33 @@ function FormContent() {
     }
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    setTimeout(() => {
+      setFormData({
+        dataSaida: '',
+        dataRetorno: '',
+        localOrigem: '',
+        localChegada: '',
+        tipoPagamentoSelected: '',
+        nome: '',
+        sobrenome: '',
+        paisResidencia: '',
+        dataNascimento: '',
+        cpf: '',
+        email: '',
+        telefone: '',
+      });
+
+      document.querySelector("[name='localOrigem']").value = '';
+      document.querySelector("[name='localChegada']").value = '';
+      document.querySelector("[name='paisResidencia']").value = '';
+    }, 1000);
+  }
+
   return (
-    <FormContentWrapper>
+    <FormContentWrapper onSubmit={handleSubmit}>
       <Text
         tag="h1"
         variant="titleXS"
@@ -303,11 +346,23 @@ function FormContent() {
             </Text>
           </Text>
 
+          {/*
           <TextField
             name="localOrigem"
             value={formData.localOrigem}
             width="318px"
             onChange={handleChange}
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.localOrigemError ? 'error' : 'main'}
+          />
+          */}
+          <Autocomplete
+            options={countries}
+            monitorField={['text']}
+            optionValue="text"
+            name="localOrigem"
+            width="318px"
             onKeyPress={handleInput}
             onBlur={onBlur}
             color={formErrors.localOrigemError ? 'error' : 'main'}
@@ -336,7 +391,7 @@ function FormContent() {
             </Text>
           </Text>
 
-          <TextField
+          {/* <TextField
             name="localChegada"
             value={formData.localChegada}
             width="318px"
@@ -344,6 +399,16 @@ function FormContent() {
             onKeyPress={handleInput}
             onBlur={onBlur}
             color={formErrors.localChegadaError ? 'error' : 'main'}
+          /> */}
+          <Autocomplete
+            options={countries}
+            monitorField={['text']}
+            optionValue="text"
+            name="localChegada"
+            width="318px"
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.localOrigemError ? 'error' : 'main'}
           />
         </div>
       </FormContentWrapper.InputGroup>
@@ -491,7 +556,7 @@ function FormContent() {
             </Text>
           </Text>
 
-          <TextField
+          {/* <TextField
             name="paisResidencia"
             value={formData.paisResidencia}
             width="318px"
@@ -499,6 +564,16 @@ function FormContent() {
             onKeyPress={handleInput}
             onBlur={onBlur}
             color={formErrors.paisResidenciaError ? 'error' : 'main'}
+          /> */}
+          <Autocomplete
+            options={countries}
+            monitorField={['text']}
+            optionValue="text"
+            name="paisResidencia"
+            width="318px"
+            onKeyPress={handleInput}
+            onBlur={onBlur}
+            color={formErrors.localOrigemError ? 'error' : 'main'}
           />
         </div>
 

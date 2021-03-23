@@ -5,7 +5,7 @@ import breakpointsMedia from '../../../../../theme/utils/breakpointsMedia';
 import propToStyle from '../../../../../theme/utils/propToStyle';
 import textStylesVariantsMap from '../../../../../theme/utils/textStylesVariantsMap';
 
-const FormContentWrapper = styled.div`
+const FormContentWrapper = styled.form`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
