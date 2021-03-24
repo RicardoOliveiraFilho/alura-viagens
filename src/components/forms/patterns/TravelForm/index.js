@@ -105,12 +105,12 @@ function FormContent() {
   function onBlur(event) {
     const fieldName = event.target.getAttribute('name');
     if (fieldName === 'dataSaida') {
+      const fieldError = validatorField.validateDate(event.target.value, false);
       setFormErrors({
         ...formErrors,
-        dataSaidaError: validatorField.validateDate(event.target.value, false),
+        dataSaidaError: fieldError,
       });
-
-      if (event.target.value && formData.dataRetorno) {
+      if (event.target.value && formData.dataRetorno && !fieldError) {
         setFormErrors({
           ...formErrors,
           dataSaidaError: validatorField.compareDates(
@@ -119,12 +119,13 @@ function FormContent() {
         });
       }
     } else if (fieldName === 'dataRetorno') {
+      const fieldError = validatorField.validateDate(event.target.value, false);
       setFormErrors({
         ...formErrors,
-        dataRetornoError: validatorField.validateDate(event.target.value, false),
+        dataRetornoError: fieldError,
       });
 
-      if (event.target.value && formData.dataSaida) {
+      if (event.target.value && formData.dataSaida && !fieldError) {
         setFormErrors({
           ...formErrors,
           dataRetornoError: validatorField.compareDates(

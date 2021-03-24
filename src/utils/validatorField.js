@@ -156,7 +156,6 @@ const validatorField = {
       if (saida) {
         return dt1 > dt2 ? 'Data posterior a de Retorno!' : '';
       }
-
       return dt1 < dt2 ? 'Data anterior a de Saída!' : '';
     }
 
